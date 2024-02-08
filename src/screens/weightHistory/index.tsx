@@ -1,0 +1,70 @@
+import ScreenView from "@/src/components/ScreenView";
+import WeightChart from "@/src/components/WeightChart";
+import useMe from "@/src/query/hooks/useMe";
+import { format } from "date-fns";
+import { Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
+
+const Section = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <View className="flex rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+      {children}
+    </View>
+  );
+};
+
+const WeightHistory = () => {
+  const { me } = useMe();
+  const { t } = useTranslation();
+
+  const filteredWeightHistory =
+    me?.weightHistory
+      .filter((a) => a.newWeight > 0 && a.newWeight < 150)
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      ) || [];
+
+  return (
+    <ScreenView padding scrollable>
+      <View className="gap-4">
+        <Section>
+          <Text className="text-lg font-bold text-black dark:text-white">
+            {t('weightHistory.TITLE')}
+          </Text>
+          <Text className="text-sm text-gray-500 dark:text-gray-400">
+            {t('weightHistory.DESCRIPTION')}
+          </Text>
+        </Section>
+        <Section>
+          <WeightChart data={filteredWeightHistory} />
+        </Section>
+        <Section>
+          {filteredWeightHistory.map((history, index) => (
+            <View
+              key={history.id}
+              className={`flex flex-row items-center justify-between px-2 py-3 ${index % 2 === 0 ? "bg-gray-100 dark:bg-gray-700" : ""}`}
+            >
+              <Text className="text-md text-black dark:text-white">
+                {format(new Date(history.createdAt), "dd.MM.yyyy - ")}
+                <Text className="text-gray-500 dark:text-gray-400">
+                  {format(new Date(history.createdAt), "HH.mm")}
+                </Text>
+              </Text>
+              <View className="rounded-lg bg-lime-500 p-1 dark:bg-lime-500">
+                <Text className="text-md font-semibold color-black dark:color-black">
+                  <Text>
+                    {history.oldWeight - history.newWeight > 0 ? "↓" : "↑"}
+                  </Text>
+                  {history.newWeight} <Text className="text-sm">{t('General.KG')}</Text>
+                </Text>
+              </View>
+            </View>
+          ))}
+        </Section>
+      </View>
+    </ScreenView>
+  );
+};
+
+export default WeightHistory;
