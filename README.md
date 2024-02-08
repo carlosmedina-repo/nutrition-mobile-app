@@ -197,8 +197,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🔗 Links
 
-- [Repository](https://github.com/denizyesilirmak/nutrition-mobile)
-- [Issue Tracker](https://github.com/denizyesilirmak/nutrition-mobile/issues)
+- [Repository](https://github.com/carlosmedina-repo/nutrition-mobile-app)
+- [Issue Tracker](https://github.com/carlosmedina-repo/nutrition-mobile-app/issues)
 - [Documentation](docs/)
 
 ---
